@@ -46,24 +46,25 @@ export default function Page() {
     getPokemon();
   }, []);
 
-  useEffect(() => {
-    const s = pokemon.filter((p) => p.name.includes(searchTerm));
-    setSearchPokemon(s);
-    const d = s.slice(offset, offset + limit);
-    setDisplayPokemon(d);
-    localStorage.setItem("search", JSON.stringify(s));
-    localStorage.setItem("display", JSON.stringify(d));
-  }, [pokemon, searchTerm, offset]);
-
   function handleSearch(searchTerm: string) {
     setSearchTerm(searchTerm);
     setOffset(0);
+    const s = pokemon.filter((p) => p.name.includes(searchTerm));
+    setSearchPokemon(s);
+    const d = s.slice(0, 0 + limit);
+    setDisplayPokemon(d);
+    localStorage.setItem("search", JSON.stringify(s));
+    localStorage.setItem("display", JSON.stringify(d));
     localStorage.setItem("searchTerm", JSON.stringify(searchTerm));
     localStorage.setItem("offset", JSON.stringify(0));
   }
 
   function HandleChangeOffset(newOffset: number) {
     setOffset(newOffset);
+    const s = pokemon.filter((p) => p.name.includes(searchTerm));
+    setSearchPokemon(s);
+    const d = s.slice(newOffset, newOffset + limit);
+    setDisplayPokemon(d);
     localStorage.setItem("offset", JSON.stringify(newOffset));
   }
 

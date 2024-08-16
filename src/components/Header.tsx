@@ -11,7 +11,7 @@ interface props {
 }
 
 function Header({ handleSearch: fn }: props) {
-  const [searchTerm, setSearchterm] = useState("");
+  const [searchTerm, setSearchterm] = useState(JSON.parse(localStorage.getItem("searchTerm") ?? ""));
 
   function handleSearch(e: ChangeEvent<HTMLInputElement>) {
     const value = e.target.value;
