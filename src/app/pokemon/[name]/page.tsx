@@ -1,4 +1,3 @@
-import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import DumbbellIcon from "@/components/icon/dumbell";
 import { Badge } from "@/components/ui/badge";
@@ -8,6 +7,8 @@ import type { Pokemon } from "@/typedef/pokemon";
 import { toTitleCase } from "@/lib/utils";
 import BoltIcon from "@/components/icon/bolt";
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
+import BasicHeader from "@/components/BasicHeader";
+import BackButton from "@/components/BackButton";
 
 interface props {
   params: { name: string };
@@ -18,8 +19,11 @@ export default async function Page({ params }: props) {
   const pokemon: Pokemon = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`).then((res) => res.json());
   return (
     <div className="flex flex-col min-h-screen">
-      <Header />
+      <BasicHeader />
       <main className="flex-1 bg-muted/40 py-8">
+        <div className="px-8 pb-4">
+          <BackButton />
+        </div>
         <div className="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div className="bg-background rounded-lg shadow-md overflow-hidden">
             <div className="aspect-square flex items-center justify-center bg-muted/20 p-4">

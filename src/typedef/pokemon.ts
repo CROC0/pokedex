@@ -3,13 +3,12 @@
 import type { APIResource, Description, Effect, FlavorText, Name, NamedAPIResource, VerboseEffect, VersionEncounterDetail, VersionGameIndex } from "./utility";
 
 export interface PokemonList {
-  count: number;
-  next: string | null;
-  previous: string | null;
-  results: Array<{
-    name: string;
-    url: string;
-  }>;
+  pokemon: Array<PokemonItem>;
+}
+
+export interface PokemonItem {
+  name: string;
+  url: string;
 }
 
 export interface Ability {
