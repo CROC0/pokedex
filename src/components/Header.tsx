@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState, type Dispatch, type SetStateAction } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import Link from "next/link";
 
 import type { PokemonItem } from "@/typedef/pokemon";
@@ -11,7 +11,11 @@ interface props {
 }
 
 function Header({ handleSearch: fn }: props) {
-  const [searchTerm, setSearchterm] = useState(JSON.parse(localStorage.getItem("searchTerm") ?? ""));
+  const [searchTerm, setSearchterm] = useState("");
+
+  useEffect(() => {
+    JSON.parse(localStorage.getItem("searchTerm") ?? "");
+  }, []);
 
   function handleSearch(e: ChangeEvent<HTMLInputElement>) {
     const value = e.target.value;
