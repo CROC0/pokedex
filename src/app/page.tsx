@@ -1,61 +1,70 @@
 "use client";
 import { useEffect, useState } from "react";
-import { usePathname, useSearchParams, useRouter } from "next/navigation";
-
 import type { PokemonItem, PokemonList } from "@/typedef/pokemon";
-
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import PokeContainer from "@/components/PokeContainer";
 import ListPagination from "@/components/ListPagination";
 
 export default function Page() {
-  const searchParams = useSearchParams();
-  const params = new URLSearchParams(searchParams);
-  const pathname = usePathname();
-  const { replace } = useRouter();
-
   const [pokemon, setPokemon] = useState<PokemonItem[]>([]);
   const [searchPokemon, setSearchPokemon] = useState<PokemonItem[]>([]);
   const [displayPokemon, setDisplayPokemon] = useState<PokemonItem[]>([]);
-  const [search, setSearch] = useState(params.get("q") ?? "");
-  const [offset, setOffset] = useState(Number(params.get("o") ?? 0));
+  const [searchTerm, setSearchTerm] = useState("");
+  const [offset, setOffset] = useState(0);
   const [limit] = useState(10);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function getPokemon() {
-      const { pokemon: pokemonList }: PokemonList = await fetch("/results.json").then((r) => r.json());
-      setPokemon(pokemonList);
-      const filteredList = pokemonList.filter((p) => p.name.includes(search));
-      setSearchPokemon(filteredList);
-      const displayList = filteredList.slice(offset, offset + limit);
-      setDisplayPokemon(displayList);
+      const localPokemon = localStorage.getItem("pokemon");
+      const LocalSearchPokemon = localStorage.getItem("search");
+      const localDisplayPokemon = localStorage.getItem("display");
+      const localSearchTerm = localStorage.getItem("searchTerm");
+      const localOffset = localStorage.getItem("offset");
+      if (localPokemon && LocalSearchPokemon && localDisplayPokemon) {
+        setPokemon(JSON.parse(localPokemon));
+        setSearchPokemon(JSON.parse(LocalSearchPokemon));
+        setDisplayPokemon(JSON.parse(localDisplayPokemon));
+        setSearchTerm(JSON.parse(localSearchTerm ?? ""));
+        setOffset(Number(JSON.parse(localOffset ?? "0")));
+      } else {
+        console.log("fetching");
+        const { pokemon: pokemonList }: PokemonList = await fetch("/results.json").then((r) => r.json());
+        setPokemon(pokemonList);
+        localStorage.setItem("pokemon", JSON.stringify(pokemonList));
+        const filteredList = pokemonList.filter((p) => p.name.includes(searchTerm));
+        setSearchPokemon(filteredList);
+        localStorage.setItem("search", JSON.stringify(filteredList));
+        const displayList = filteredList.slice(offset, offset + limit);
+        setDisplayPokemon(displayList);
+        localStorage.setItem("display", JSON.stringify(displayList));
+      }
       setLoading(false);
     }
+
     getPokemon();
   }, []);
 
   useEffect(() => {
-    const tmp = pokemon.filter((p) => p.name.includes(search));
-    setSearchPokemon(tmp);
-    setDisplayPokemon(tmp.slice(offset, offset + limit));
-  }, [search, offset]);
+    const s = pokemon.filter((p) => p.name.includes(searchTerm));
+    setSearchPokemon(s);
+    const d = s.slice(offset, offset + limit);
+    setDisplayPokemon(d);
+    localStorage.setItem("search", JSON.stringify(s));
+    localStorage.setItem("display", JSON.stringify(d));
+  }, [pokemon, searchTerm, offset]);
 
   function handleSearch(searchTerm: string) {
-    setSearch(searchTerm);
+    setSearchTerm(searchTerm);
     setOffset(0);
-
-    params.set("q", searchTerm);
-    replace(`${pathname}?${params.toString()}`);
-    params.set("o", String(0));
-    replace(`${pathname}?${params.toString()}`);
+    localStorage.setItem("searchTerm", JSON.stringify(searchTerm));
+    localStorage.setItem("offset", JSON.stringify(0));
   }
 
   function HandleChangeOffset(newOffset: number) {
     setOffset(newOffset);
-    params.set("o", String(newOffset));
-    replace(`${pathname}?${params.toString()}`);
+    localStorage.setItem("offset", JSON.stringify(newOffset));
   }
 
   return (

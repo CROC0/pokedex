@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Pokemon } from "@/typedef/pokemon";
@@ -27,7 +27,7 @@ function PokeCard({ url, name }: props) {
   return (
     <Link href={`/pokemon/${name}`} className="bg-background rounded-lg shadow-md overflow-hidden" prefetch={false}>
       <div className="aspect-square flex items-center justify-center bg-muted/20 p-4">
-        <Image
+        {/* <Image
           src={
             (pokemon.sprites.other && pokemon.sprites.other["official-artwork"] && pokemon.sprites.other["official-artwork"].front_default) ??
             pokemon.sprites.front_default
@@ -37,7 +37,7 @@ function PokeCard({ url, name }: props) {
           height="512"
           className="w-full h-full object-contain"
           style={{ aspectRatio: "128/128", objectFit: "cover" }}
-        />
+        /> */}
       </div>
       <div className="p-4">
         <h3 className="text-lg font-bold">{toTitleCase(name)}</h3>
