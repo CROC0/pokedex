@@ -1,8 +1,5 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import Link from "next/link";
-
-import type { PokemonItem } from "@/typedef/pokemon";
-import SearchBar from "./SearchBar";
 import SearchIcon from "./icon/search";
 import { Input } from "./ui/input";
 
@@ -14,7 +11,8 @@ function Header({ handleSearch: fn }: props) {
   const [searchTerm, setSearchterm] = useState("");
 
   useEffect(() => {
-    JSON.parse(localStorage.getItem("searchTerm") ?? "");
+    const localSearchTerm = localStorage.getItem("searchTerm");
+    if (localSearchTerm) setSearchterm(JSON.parse(localSearchTerm));
   }, []);
 
   function handleSearch(e: ChangeEvent<HTMLInputElement>) {

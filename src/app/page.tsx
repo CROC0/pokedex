@@ -26,8 +26,8 @@ export default function Page() {
         setPokemon(JSON.parse(localPokemon));
         setSearchPokemon(JSON.parse(LocalSearchPokemon));
         setDisplayPokemon(JSON.parse(localDisplayPokemon));
-        setSearchTerm(JSON.parse(localSearchTerm ?? ""));
-        setOffset(Number(JSON.parse(localOffset ?? "0")));
+        if (localSearchTerm) setSearchTerm(JSON.parse(localSearchTerm));
+        if (localOffset) setOffset(Number(JSON.parse(localOffset)));
       } else {
         console.log("fetching");
         const { pokemon: pokemonList }: PokemonList = await fetch("/results.json").then((r) => r.json());
