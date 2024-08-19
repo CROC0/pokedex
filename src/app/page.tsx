@@ -17,11 +17,11 @@ export default function Page() {
 
   useEffect(() => {
     async function getPokemon() {
-      const localPokemon = localStorage.getItem("pokemon");
-      const LocalSearchPokemon = localStorage.getItem("search");
-      const localDisplayPokemon = localStorage.getItem("display");
-      const localSearchTerm = localStorage.getItem("searchTerm");
-      const localOffset = localStorage.getItem("offset");
+      const localPokemon = sessionStorage.getItem("pokemon");
+      const LocalSearchPokemon = sessionStorage.getItem("search");
+      const localDisplayPokemon = sessionStorage.getItem("display");
+      const localSearchTerm = sessionStorage.getItem("searchTerm");
+      const localOffset = sessionStorage.getItem("offset");
       if (localPokemon && LocalSearchPokemon && localDisplayPokemon) {
         setPokemon(JSON.parse(localPokemon));
         setSearchPokemon(JSON.parse(LocalSearchPokemon));
@@ -32,13 +32,13 @@ export default function Page() {
         console.log("fetching");
         const { pokemon: pokemonList }: PokemonList = await fetch("/results.json").then((r) => r.json());
         setPokemon(pokemonList);
-        localStorage.setItem("pokemon", JSON.stringify(pokemonList));
+        sessionStorage.setItem("pokemon", JSON.stringify(pokemonList));
         const filteredList = pokemonList.filter((p) => p.name.includes(searchTerm));
         setSearchPokemon(filteredList);
-        localStorage.setItem("search", JSON.stringify(filteredList));
+        sessionStorage.setItem("search", JSON.stringify(filteredList));
         const displayList = filteredList.slice(offset, offset + limit);
         setDisplayPokemon(displayList);
-        localStorage.setItem("display", JSON.stringify(displayList));
+        sessionStorage.setItem("display", JSON.stringify(displayList));
       }
       setLoading(false);
     }
@@ -53,10 +53,10 @@ export default function Page() {
     setSearchPokemon(s);
     const d = s.slice(0, 0 + limit);
     setDisplayPokemon(d);
-    localStorage.setItem("search", JSON.stringify(s));
-    localStorage.setItem("display", JSON.stringify(d));
-    localStorage.setItem("searchTerm", JSON.stringify(searchTerm));
-    localStorage.setItem("offset", JSON.stringify(0));
+    sessionStorage.setItem("search", JSON.stringify(s));
+    sessionStorage.setItem("display", JSON.stringify(d));
+    sessionStorage.setItem("searchTerm", JSON.stringify(searchTerm));
+    sessionStorage.setItem("offset", JSON.stringify(0));
   }
 
   function HandleChangeOffset(newOffset: number) {
@@ -65,7 +65,7 @@ export default function Page() {
     setSearchPokemon(s);
     const d = s.slice(newOffset, newOffset + limit);
     setDisplayPokemon(d);
-    localStorage.setItem("offset", JSON.stringify(newOffset));
+    sessionStorage.setItem("offset", JSON.stringify(newOffset));
   }
 
   return (
