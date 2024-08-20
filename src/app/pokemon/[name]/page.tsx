@@ -1,19 +1,18 @@
 import type { Pokemon, PokemonSpecies } from "@/typedef/pokemon";
 import { NamedAPIResource } from "@/typedef/utility";
 import { EvolutionChain } from "@/typedef/evolution";
+import { toTitleCase } from "@/lib/utils";
+import { Table, TableHeader, TableRow, TableHead } from "@/components/ui/table";
 import Footer from "@/components/Footer";
 import DumbbellIcon from "@/components/icon/dumbell";
 import { Badge } from "@/components/ui/badge";
 import ShieldIcon from "@/components/icon/shield";
 import HeartIcon from "@/components/icon/heart";
-import { toTitleCase } from "@/lib/utils";
 import BoltIcon from "@/components/icon/bolt";
-import { Table, TableHeader, TableRow, TableHead } from "@/components/ui/table";
 import BasicHeader from "@/components/BasicHeader";
 import BackButton from "@/components/BackButton";
 import MovesList from "@/components/MovesList";
 import PokeCard from "@/components/PokeCard";
-import { useMemo } from "react";
 
 interface props {
   params: { name: string };
@@ -66,7 +65,7 @@ export default async function Page({ params }: props) {
             <div className="prose">
               <p>
                 {species.flavor_text_entries
-                  .filter((gp) => gp.version.name == "red")[0]
+                  .sort((a) => (a.version.name == "red" ? -99 : 99))[0]
                   .flavor_text.replace(/\f/g, "\n")
                   .replace(/\u00ad\n/g, "")
                   .replace(/\u00ad/g, "")
