@@ -13,7 +13,7 @@ import BasicHeader from "@/components/BasicHeader";
 import BackButton from "@/components/BackButton";
 import MovesList from "@/components/MovesList";
 import PokeCard from "@/components/PokeCard";
-import Image from "next/image";
+import PokeImage from "./PokeImage";
 
 interface props {
   params: { name: string };
@@ -41,16 +41,12 @@ export default async function Page({ params }: props) {
         <div className="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div className="bg-background rounded-lg shadow-md overflow-hidden">
             <div className="aspect-square flex items-center justify-center bg-muted/20 p-4">
-              <Image
+              <PokeImage
                 src={
                   (pokemon.sprites.other && pokemon.sprites.other["official-artwork"] && pokemon.sprites.other["official-artwork"].front_default) ??
                   pokemon.sprites.front_default
                 }
-                alt={name}
-                width={256 * 10}
-                height={256 * 10}
-                className="w-full h-full object-contain"
-                style={{ aspectRatio: "256/256", objectFit: "cover" }}
+                name={name}
               />
             </div>
           </div>
