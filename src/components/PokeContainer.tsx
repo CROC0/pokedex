@@ -17,7 +17,7 @@ function PokeContainer({ pokemon, loading }: props) {
           ? Array(10)
               .fill(undefined)
               .map((p) => <SkeletonCard key={Math.random()} />)
-          : pokemon.map((p) => <PokeCard key={p.name} name={p.name} url={p.url} />)}
+          : pokemon.map((p) => <PokeCard key={p.name} name={p.name} url={p.url} imageSize={512} />)}
       </div>
     </div>
   );

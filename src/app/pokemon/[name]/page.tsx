@@ -13,6 +13,7 @@ import BasicHeader from "@/components/BasicHeader";
 import BackButton from "@/components/BackButton";
 import MovesList from "@/components/MovesList";
 import PokeCard from "@/components/PokeCard";
+import Image from "next/image";
 
 interface props {
   params: { name: string };
@@ -40,7 +41,7 @@ export default async function Page({ params }: props) {
         <div className="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div className="bg-background rounded-lg shadow-md overflow-hidden">
             <div className="aspect-square flex items-center justify-center bg-muted/20 p-4">
-              <img
+              <Image
                 src={
                   (pokemon.sprites.other && pokemon.sprites.other["official-artwork"] && pokemon.sprites.other["official-artwork"].front_default) ??
                   pokemon.sprites.front_default
@@ -136,7 +137,7 @@ export default async function Page({ params }: props) {
             <h2 className="text-xl font-bold mb-4">Evolutions</h2>
             <div className="mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6">
               {evolutionList.map((evo) => (
-                <PokeCard key={evo.species_name} name={evo.species_name} url={`https://pokeapi.co/api/v2/pokemon/${evo.species_name}`} />
+                <PokeCard key={evo.species_name} name={evo.species_name} url={`https://pokeapi.co/api/v2/pokemon/${evo.species_name}`} imageSize={100} />
               ))}
             </div>
             <div className="space-y-4">

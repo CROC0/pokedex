@@ -10,9 +10,10 @@ import SkeletonCard from "./SkeletonCard";
 type props = {
   url: string;
   name: string;
+  imageSize: number;
 };
 
-function PokeCard({ url, name }: props) {
+function PokeCard({ url, name, imageSize }: props) {
   const [pokemon, setPokemon] = useState<Pokemon>();
 
   useEffect(() => {
@@ -34,8 +35,8 @@ function PokeCard({ url, name }: props) {
             pokemon.sprites.front_default
           }
           alt={name}
-          width="512"
-          height="512"
+          width={imageSize}
+          height={imageSize}
           className="w-full h-full object-contain"
           style={{ aspectRatio: "128/128", objectFit: "cover" }}
         />

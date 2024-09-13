@@ -52,7 +52,7 @@ export interface Move {
 
 export interface MoveDetails {
   name: string;
-  url: string;
+  url?: string;
   accuracy: number;
   power: number;
   type: string;

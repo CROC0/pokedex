@@ -6,13 +6,14 @@ import Footer from "@/components/Footer";
 import PokeContainer from "@/components/PokeContainer";
 import ListPagination from "@/components/ListPagination";
 
+const LIMIT = 8;
+
 export default function Page() {
   const [pokemon, setPokemon] = useState<PokemonItem[]>([]);
   const [searchPokemon, setSearchPokemon] = useState<PokemonItem[]>([]);
   const [displayPokemon, setDisplayPokemon] = useState<PokemonItem[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [offset, setOffset] = useState(0);
-  const [limit] = useState(10);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -36,7 +37,7 @@ export default function Page() {
         const filteredList = pokemonList.filter((p) => p.name.includes(searchTerm));
         setSearchPokemon(filteredList);
         sessionStorage.setItem("search", JSON.stringify(filteredList));
-        const displayList = filteredList.slice(offset, offset + limit);
+        const displayList = filteredList.slice(offset, offset + LIMIT);
         setDisplayPokemon(displayList);
         sessionStorage.setItem("display", JSON.stringify(displayList));
       }
@@ -51,7 +52,7 @@ export default function Page() {
     setOffset(0);
     const s = pokemon.filter((p) => p.name.includes(searchTerm));
     setSearchPokemon(s);
-    const d = s.slice(0, 0 + limit);
+    const d = s.slice(0, 0 + LIMIT);
     setDisplayPokemon(d);
     sessionStorage.setItem("search", JSON.stringify(s));
     sessionStorage.setItem("display", JSON.stringify(d));
@@ -63,7 +64,7 @@ export default function Page() {
     setOffset(newOffset);
     const s = pokemon.filter((p) => p.name.includes(searchTerm));
     setSearchPokemon(s);
-    const d = s.slice(newOffset, newOffset + limit);
+    const d = s.slice(newOffset, newOffset + LIMIT);
     setDisplayPokemon(d);
     sessionStorage.setItem("offset", JSON.stringify(newOffset));
   }
@@ -71,7 +72,7 @@ export default function Page() {
   return (
     <div className="flex flex-col min-h-screen">
       <Header handleSearch={handleSearch} />
-      <ListPagination count={searchPokemon.length} limit={limit} offset={offset} handleChangeOffset={HandleChangeOffset} />
+      <ListPagination count={searchPokemon.length} limit={LIMIT} offset={offset} handleChangeOffset={HandleChangeOffset} />
       <main className="flex-1 bg-muted/40 py-8">
         <PokeContainer pokemon={displayPokemon} loading={loading} />
       </main>

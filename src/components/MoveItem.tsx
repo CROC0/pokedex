@@ -21,15 +21,3 @@ function MoveItem({ move, stab }: props) {
 }
 
 export default MoveItem;
-
-function SkeletonTable({ name }: { name: string }) {
-  return (
-    <TableRow>
-      <TableCell>{name}</TableCell>
-      <TableCell></TableCell>
-      <TableCell></TableCell>
-      <TableCell></TableCell>
-      <TableCell></TableCell>
-    </TableRow>
-  );
-}

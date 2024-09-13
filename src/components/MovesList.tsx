@@ -16,20 +16,30 @@ function MovesList({ moves, types }: props) {
 
   useEffect(() => {
     async function getMoves() {
+      console.log("running");
       const filteredMoves = moves.filter(filterMove);
-      const tmpArray: MoveDetails[] = [];
+      const fnArray = [];
+      const lvl: Record<string, number> = {};
+
       for (let i = 0; i < filteredMoves.length; i++) {
         const data = filteredMoves[i];
-        const move: Move = await fetch(data.move.url).then((res) => res.json());
+        const moveFn = fetch(data.move.url).then((res) => res.json());
+        fnArray.push(moveFn);
+        lvl[data.move.name] = data.version_group_details.filter((gp) => gp.version_group.name == "red-blue")[0].level_learned_at;
+      }
+
+      const moveData = (await Promise.all(fnArray)) as Move[];
+      const tmpArray: MoveDetails[] = [];
+      moveData.forEach((move, index) => {
         tmpArray.push({
-          name: data.move.name,
-          url: data.move.url,
+          name: move.name,
           accuracy: move.accuracy,
           power: move.power,
           type: move.type.name,
-          level: data.version_group_details.filter((gp) => gp.version_group.name == "red-blue")[0].level_learned_at,
+          level: lvl[move.name],
         });
-      }
+      });
+
       const sorted = tmpArray
         .filter((a) => a.level != 0)
         .sort((a, b) => a.level - b.level)
@@ -41,11 +51,9 @@ function MovesList({ moves, types }: props) {
 
   return (
     <TableBody>
-      <Suspense>
-        {moveDetails.map((move) => (
-          <MoveItem key={move.name} move={move} stab={types.filter((t) => t.type.name == move.type).length > 0} />
-        ))}
-      </Suspense>
+      {moveDetails.map((move) => (
+        <MoveItem key={move.name} move={move} stab={types.filter((t) => t.type.name == move.type).length > 0} />
+      ))}
     </TableBody>
   );
 }
